@@ -102,6 +102,7 @@ struct OverlayContainerRepresentableAdaptator<Background: View>: UIViewControlle
             let transaction = Transaction(animation: animation)
             let translation = OverlayTranslation(
                 height: coordinator.targetTranslationHeight,
+                progress: coordinator.translationProgress(),
                 transaction: transaction
             )
             withTransaction(transaction) {

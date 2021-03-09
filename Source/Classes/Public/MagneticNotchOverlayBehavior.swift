@@ -34,6 +34,7 @@ public extension MagneticNotchOverlayBehavior {
     struct Translation {
         /// The current overlay height.
         public let height: CGFloat
+        public let progress: CGFloat
         /// The transaction associated to the translation.
         public let transaction: Transaction
     }

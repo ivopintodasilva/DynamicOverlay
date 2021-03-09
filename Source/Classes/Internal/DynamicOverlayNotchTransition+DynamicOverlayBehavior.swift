@@ -30,6 +30,7 @@ extension MagneticNotchOverlayBehavior {
                     $0(
                         Translation(
                             height: translation.height,
+                            progress: translation.progress,
                             transaction: translation.transaction
                         )
                     )

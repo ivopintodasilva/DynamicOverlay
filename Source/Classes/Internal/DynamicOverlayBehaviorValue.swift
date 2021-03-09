@@ -10,6 +10,7 @@ import SwiftUI
 
 struct OverlayTranslation {
     let height: CGFloat
+    let progress: CGFloat
     let transaction: Transaction
 }
 
