@@ -19,14 +19,16 @@ struct OverlayContainerDynamicOverlayView<Background: View, Content: View>: View
 
     let background: Background
     let content: Content
+    let style: DynamicOverlayStyle
 
     @Environment(\.behaviorValue)
     var behavior: DynamicOverlayBehaviorValue
     
-    init(background: Background, content: Content) {
+    init(background: Background, content: Content, style: DynamicOverlayStyle) {
         
         self.background = background
         self.content = content
+        self.style = style
     }
 
     var body: some View {
@@ -35,7 +37,8 @@ struct OverlayContainerDynamicOverlayView<Background: View, Content: View>: View
                 searchsScrollView: searchsScrollView,
                 handleValue: handleValue,
                 behavior: behavior,
-                background: background
+                background: background,
+                style: style
             )
             .passThroughContent()
             .overlayContent(content)
@@ -57,6 +60,7 @@ struct OverlayContainerRepresentableAdaptator<Background: View>: UIViewControlle
     let handleValue: DynamicOverlayDragHandle
     let behavior: DynamicOverlayBehaviorValue
     let background: Background
+    let style: DynamicOverlayStyle
 
     private var animationController: DynamicOverlayContainerAnimationController {
         DynamicOverlayContainerAnimationController()
@@ -87,7 +91,7 @@ struct OverlayContainerRepresentableAdaptator<Background: View>: UIViewControlle
         let backgroundController = UIHostingController(rootView: background)
         let controller = BackgroundAndOverlayContainerViewController(
             backgroundViewController: backgroundController,
-            style: .flexibleHeight
+            style: OverlayContainerViewController.OverlayStyle(style: style)
         )
         controller.delegate = context.coordinator
         return controller
@@ -117,5 +121,20 @@ struct OverlayContainerRepresentableAdaptator<Background: View>: UIViewControlle
             }
         }
         context.coordinator.move(uiViewController, to: containerState, animated: context.transaction.animation != nil)
+    }
+}
+
+extension OverlayContainerViewController.OverlayStyle {
+    
+    init(style: DynamicOverlayStyle) {
+        
+        switch style {
+        case .flexibleHeight:
+            self = .flexibleHeight
+        case .rigid:
+            self = .rigid
+        case .expandableHeight:
+            self = .expandableHeight
+        }
     }
 }
