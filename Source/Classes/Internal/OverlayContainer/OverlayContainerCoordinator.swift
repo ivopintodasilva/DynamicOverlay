@@ -22,6 +22,7 @@ struct OverlayContainerState: Equatable {
 
 class OverlayContainerCoordinator {
 
+    var willMoveToNotch: ((Int) -> Void)?
     var notchChangeUpdateHandler: ((Int) -> Void)?
 
     var translationUpdateHandler: ((OverlayContainerTransitionCoordinator) -> Void)?
@@ -88,7 +89,18 @@ extension OverlayContainerCoordinator: OverlayContainerViewControllerDelegate {
                                         availableSpace: CGFloat) -> CGFloat {
         indexMapper.height(forOverlayIndex: index)
     }
-
+    
+    func overlayContainerViewController(
+        _ containerViewController: OverlayContainerViewController,
+        willMoveOverlay overlayViewController: UIViewController,
+        toNotchAt index: Int
+    ) {
+        
+        let newState = state.withNewNotch(index)
+        guard newState != state else { return }
+        willMoveToNotch?(indexMapper.dynamicIndex(forOverlayIndex: index))
+    }
+    
     func overlayContainerViewController(_ containerViewController: OverlayContainerViewController,
                                         didMoveOverlay overlayViewController: UIViewController,
                                         toNotchAt index: Int) {

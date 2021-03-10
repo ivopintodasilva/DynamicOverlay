@@ -50,6 +50,13 @@ public extension MagneticNotchOverlayBehavior {
 }
 
 public extension MagneticNotchOverlayBehavior {
+    
+    func onWillMoveToNotch(_ action: @escaping (Notch) -> Void) -> Self {
+        MagneticNotchOverlayBehavior(value: value.appending(action))
+    }
+}
+
+public extension MagneticNotchOverlayBehavior {
 
     /// Updates the current overlay notch as it changes.
     ///
