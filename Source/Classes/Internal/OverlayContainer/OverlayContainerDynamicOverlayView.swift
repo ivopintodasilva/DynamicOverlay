@@ -99,6 +99,7 @@ struct OverlayContainerRepresentableAdaptator<Background: View>: UIViewControlle
 
     func updateUIViewController(_ uiViewController: OverlayContainerViewController, context: Context) {
         context.coordinator.willMoveToNotch = { notch in behavior.willMoveToNotchBlock?(notch) }
+        context.coordinator.canMoveToNotch = { notch in behavior.canMoveToNotch?(notch) ?? true }
         context.coordinator.notchChangeUpdateHandler = { notch in
             behavior.binding?.wrappedValue = notch
         }

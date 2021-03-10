@@ -21,17 +21,20 @@ struct DynamicOverlayBehaviorValue {
     let willMoveToNotchBlock: ((Int) -> Void)?
     let binding: Binding<Int>?
     let disabledNotchIndexes: Set<Int>
+    let canMoveToNotch: ((Int) -> Bool)?
 
     init(notchDimensions: [Int: NotchDimension]? = nil,
          block: ((OverlayTranslation) -> Void)? = nil,
          willMoveToNotchBlock: ((Int) -> Void)? = nil,
          binding: Binding<Int>? = nil,
-         disabledNotchIndexes: Set<Int> = []) {
+         disabledNotchIndexes: Set<Int> = [],
+         canMoveToNotch: ((Int) -> Bool)? = nil) {
         self.notchDimensions = notchDimensions
         self.block = block
         self.willMoveToNotchBlock = willMoveToNotchBlock
         self.binding = binding
         self.disabledNotchIndexes = disabledNotchIndexes
+        self.canMoveToNotch = canMoveToNotch
     }
 }
 

@@ -17,17 +17,20 @@ extension MagneticNotchOverlayBehavior {
         let willMoveToNotchBlocks: [(Notch) -> Void]
         let binding: Binding<Notch>?
         let disabledNotches: [Notch]
+        let canMoveToNotch: (Notch) -> Bool
 
         init(dimensions: @escaping (Notch) -> NotchDimension,
              translationBlocks: [(Translation) -> Void],
              willMoveToNotchBlocks: [(Notch) -> Void],
              binding: Binding<Notch>?,
-             disabledNotches: [Notch]) {
+             disabledNotches: [Notch],
+             canMoveToNotch: @escaping (Notch) -> Bool) {
             self.dimensions = dimensions
             self.translationBlocks = translationBlocks
             self.willMoveToNotchBlocks = willMoveToNotchBlocks
             self.binding = binding
             self.disabledNotches = disabledNotches
+            self.canMoveToNotch = canMoveToNotch
         }
 
         init(dimensions: @escaping (Notch) -> NotchDimension) {
@@ -36,6 +39,7 @@ extension MagneticNotchOverlayBehavior {
             self.willMoveToNotchBlocks = []
             self.binding = nil
             self.disabledNotches = []
+            self.canMoveToNotch = { _ in true }
         }
 
         // MARK: - Public
@@ -46,7 +50,8 @@ extension MagneticNotchOverlayBehavior {
                 translationBlocks: translationBlocks + [block],
                 willMoveToNotchBlocks: willMoveToNotchBlocks,
                 binding: binding,
-                disabledNotches: disabledNotches
+                disabledNotches: disabledNotches,
+                canMoveToNotch: canMoveToNotch
             )
         }
         
@@ -56,7 +61,8 @@ extension MagneticNotchOverlayBehavior {
                 translationBlocks: translationBlocks,
                 willMoveToNotchBlocks: willMoveToNotchBlocks + [block],
                 binding: binding,
-                disabledNotches: disabledNotches
+                disabledNotches: disabledNotches,
+                canMoveToNotch: canMoveToNotch
             )
         }
 
@@ -66,7 +72,8 @@ extension MagneticNotchOverlayBehavior {
                 translationBlocks: translationBlocks,
                 willMoveToNotchBlocks: willMoveToNotchBlocks,
                 binding: binding,
-                disabledNotches: disabledNotches
+                disabledNotches: disabledNotches,
+                canMoveToNotch: canMoveToNotch
             )
         }
 
@@ -76,7 +83,19 @@ extension MagneticNotchOverlayBehavior {
                 translationBlocks: translationBlocks,
                 willMoveToNotchBlocks: willMoveToNotchBlocks,
                 binding: binding,
-                disabledNotches: isDisabled ? disabledNotches + [notch] : disabledNotches
+                disabledNotches: isDisabled ? disabledNotches + [notch] : disabledNotches,
+                canMoveToNotch: canMoveToNotch
+            )
+        }
+        
+        func setting(_ action: @escaping (Notch) -> Bool) -> Self {
+            Value(
+                dimensions: dimensions,
+                translationBlocks: translationBlocks,
+                willMoveToNotchBlocks: willMoveToNotchBlocks,
+                binding: binding,
+                disabledNotches: disabledNotches,
+                canMoveToNotch: action
             )
         }
     }

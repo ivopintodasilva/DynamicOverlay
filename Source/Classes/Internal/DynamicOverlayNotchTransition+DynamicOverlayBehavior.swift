@@ -38,7 +38,8 @@ extension MagneticNotchOverlayBehavior {
             },
             willMoveToNotchBlock: { index in value.willMoveToNotchBlocks.forEach { $0(Notch.value(at: index)) } },
             binding: value.binding?.indexBinding(),
-            disabledNotchIndexes: Set(value.disabledNotches.map { Notch.index(of: $0) })
+            disabledNotchIndexes: Set(value.disabledNotches.map { Notch.index(of: $0) }),
+            canMoveToNotch: { index in value.canMoveToNotch(Notch.value(at: index)) }
         )
     }
 }

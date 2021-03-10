@@ -25,6 +25,8 @@ class OverlayContainerCoordinator {
     var willMoveToNotch: ((Int) -> Void)?
     var notchChangeUpdateHandler: ((Int) -> Void)?
 
+    var canMoveToNotch: ((Int) -> Bool)?
+
     var translationUpdateHandler: ((OverlayContainerTransitionCoordinator) -> Void)?
 
     var shouldStartDraggingOverlay: ((CGPoint) -> Bool)?
@@ -120,7 +122,8 @@ extension OverlayContainerCoordinator: OverlayContainerViewControllerDelegate {
     func overlayContainerViewController(_ containerViewController: OverlayContainerViewController,
                                         canReachNotchAt index: Int,
                                         forOverlay overlayViewController: UIViewController) -> Bool {
-        !state.disabledNotches.map { indexMapper.overlayIndex(forDynamicIndex: $0) }.contains(index)
+        
+        canMoveToNotch?(indexMapper.dynamicIndex(forOverlayIndex: index)) ?? true
     }
 
     func overlayContainerViewController(_ containerViewController: OverlayContainerViewController,
